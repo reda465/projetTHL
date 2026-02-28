@@ -2,6 +2,14 @@
 #include<string.h>
 #include<stdbool.h>
 //structure de etat
+int LireChoixEntre(int from, int to){
+    int choix;
+    do{
+        printf("Entrez un choix entre %d et %d : \n", from,to);
+    scanf("%d",&choix);
+    }while(choix<from || choix>to);
+    return choix;
+}
 typedef struct 
 {
     int numetat;
@@ -44,7 +52,7 @@ void etat_final(automates *automate,int numdetat){
 //fonction de lecture et stackage dans la memoire
 void lireautomate(automates *automate ,const char *nomdefichier){//ici l utilisateur peut entre le nom de sont fichier et ne peut pas etre chager
     FILE*fichierdot =fopen(nomdefichier,"r");
-    if(fichierdot==NULL){perror("errur d overture de dot.dot");
+    if(fichierdot==NULL){perror("erreur d overture de dot.dot");
     return;}
     char ligne[256];
     int nombdtetat;
@@ -63,11 +71,43 @@ void lireautomate(automates *automate ,const char *nomdefichier){//ici l utilisa
             else if(strstr(ligne,"->")){
                 nombdetransition++;
             }
-            
-        
+    }
+}
+void _ShowTransaction(automates * automate )
+{
+    for(int i=0;i<automate->nombtransition;i++)
+    {
+        printf("%d --> %d \n",((automate->transition+i)->etatpre.numetat),((automate->transition+i)->etasuiv.numetat));
+    }
+}
+int GetDispChoice (){
+    printf(" Entrez votre choix d'affichage \n");
+    printf("_________________________________");
+    printf(" 1)Afficher les transitions \n");
+    printf(" 2)Afficher les etats\n");
+    printf(" 3)Afficher les alphabets\n");
+    printf("4) Quitter");
+    return LireChoixEntre(1,4);
+}
+void afficherAutomate(automates * automate ){
+    printf("Entrez votre choix d'affichage \n");
+    int Choix=GetDispChoice();
+
+    switch(Choix){
+        case 1:
+        _ShowTransaction(automate);
+        GetDispChoice();
+        break;
+        case 2:
+         _ShowEtats();
+        GetDispChoice();
+        break;
+        case 3:
+         _ShowAlphabet();
+        GetDispChoice();
+        break;
+        case 4:
+         break;
     }
 
-
-
 }
-
